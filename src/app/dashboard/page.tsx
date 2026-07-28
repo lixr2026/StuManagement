@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/logout-button";
 import { SearchBox } from "@/components/search-box";
 import { FlashMessage } from "@/components/flash-message";
 import { Button } from "@/components/ui/button";
+import { RowActions } from "@/components/row-actions";
 import { queryStudents } from "@/lib/student-query";
 import {
   Table,
@@ -69,12 +70,13 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                 <TableHead>班级</TableHead>
                 <TableHead>电话</TableHead>
                 <TableHead className="min-w-[200px]">备注</TableHead>
+                <TableHead>操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {items.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">
+                  <TableCell colSpan={7} className="text-center text-muted-foreground">
                     暂无学生信息
                   </TableCell>
                 </TableRow>
@@ -87,6 +89,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                     <TableCell>{s.className ?? "—"}</TableCell>
                     <TableCell>{s.phone ?? "—"}</TableCell>
                     <TableCell className="text-muted-foreground">{s.remark ?? "—"}</TableCell>
+                    <TableCell>
+                      <RowActions id={s.id} />
+                    </TableCell>
                   </TableRow>
                 ))
               )}

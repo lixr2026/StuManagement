@@ -19,6 +19,7 @@
 - [x] **学生列表（feat/student-list）**：dashboard 展示学生信息表（学号/姓名/性别/班级/电话/备注），查询逻辑抽取到 `lib/student-query.ts`
 - [x] **模糊搜索（feat/search）**：表格上方搜索框，按 学号/姓名/班级 ilike 模糊查询，URL `?q=` 驱动
 - [x] **添加学生（feat/add-student）**：表格上方"添加学生"链接 → `/students/new` 填写表单 → 保存后返回 dashboard 并显示"添加学生信息成功"，表格自动刷新
+- [x] **删除学生（feat/delete-student）**：表格新增"操作"列与"删除"按钮，确认后调用 `DELETE /api/students/[id]`，删除后 `router.refresh()` 刷新表格
 
 > 后续功能随对应分支开发并合并后在此勾选更新。
 
