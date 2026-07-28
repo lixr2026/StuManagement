@@ -17,6 +17,7 @@
 - [x] **项目骨架（feat/scaffold）**：Next.js + Tailwind + Shadcn 基础组件 + Drizzle Schema + 数据库建库脚本
 - [x] **登录功能（feat/login）**：首页登录页、`/api/login` 校验 admin 表、登录成功跳转 `/dashboard`、cookie 登录态、退出登录
 - [x] **学生列表（feat/student-list）**：dashboard 展示学生信息表（学号/姓名/性别/班级/电话/备注），查询逻辑抽取到 `lib/student-query.ts`
+- [x] **模糊搜索（feat/search）**：表格上方搜索框，按 学号/姓名/班级 ilike 模糊查询，URL `?q=` 驱动
 
 > 后续功能随对应分支开发并合并后在此勾选更新。
 
