@@ -70,6 +70,10 @@ drizzle.config.ts         # Drizzle Kit 配置
 
 详见 `supabase/schema.sql`，在 Supabase SQL Editor 中执行即可创建表与初始账号 `admin / admin`。
 
+## 部署
+
+- **Vercel 部署**：见 [docs/VERCEL_DEPLOY.md](docs/VERCEL_DEPLOY.md)，含环境变量、连接串端口选择、Supabase 网络放行、部署后验证等完整步骤。
+
 ## 环境变量
 
 复制 `.env.local.example` 为 `.env.local` 并填写：
