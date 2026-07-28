@@ -1,8 +1,11 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
 import { SearchBox } from "@/components/search-box";
+import { FlashMessage } from "@/components/flash-message";
+import { Button } from "@/components/ui/button";
 import { queryStudents } from "@/lib/student-query";
 import {
   Table,
@@ -42,11 +45,19 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       </header>
 
       <section className="mx-auto max-w-5xl space-y-4 p-6">
-        <div className="flex items-center justify-between gap-4">
+        <Suspense fallback={null}>
+          <FlashMessage />
+        </Suspense>
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-lg font-semibold">学生信息列表</h2>
-          <Suspense fallback={<div className="h-10 w-64" />}>
-            <SearchBox />
-          </Suspense>
+          <div className="flex items-center gap-3">
+            <Suspense fallback={<div className="h-10 w-64" />}>
+              <SearchBox />
+            </Suspense>
+            <Button asChild>
+              <Link href="/students/new">添加学生</Link>
+            </Button>
+          </div>
         </div>
         <div className="rounded-md border bg-background">
           <Table>
