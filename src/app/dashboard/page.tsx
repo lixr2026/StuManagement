@@ -7,6 +7,7 @@ import { SearchBox } from "@/components/search-box";
 import { FlashMessage } from "@/components/flash-message";
 import { Button } from "@/components/ui/button";
 import { RowActions } from "@/components/row-actions";
+import { Pagination } from "@/components/pagination";
 import { queryStudents } from "@/lib/student-query";
 import {
   Table,
@@ -31,9 +32,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const sp = await searchParams;
   const q = sp.q ?? "";
-  const page = sp.page ? Number(sp.page) : 1;
-  const pageSize = sp.pageSize ? Number(sp.pageSize) : 100;
-  const { items } = await queryStudents({ q, page, pageSize });
+  const page = sp.page ? Math.max(Number(sp.page), 1) : 1;
+  const pageSize = sp.pageSize ? Math.min(Math.max(Number(sp.pageSize), 1), 20) : 10;
+  const { items, total, totalPages } = await queryStudents({ q, page, pageSize });
 
   return (
     <main className="min-h-screen bg-muted/30">
@@ -98,6 +99,14 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             </TableBody>
           </Table>
         </div>
+        <Suspense fallback={null}>
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            total={total}
+          />
+        </Suspense>
       </section>
     </main>
   );
