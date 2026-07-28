@@ -14,16 +14,31 @@
 
 ## 已实现功能
 
-- [x] **项目骨架（feat/scaffold）**：Next.js + Tailwind + Shadcn 基础组件 + Drizzle Schema + 数据库建库脚本
-- [x] **登录功能（feat/login）**：首页登录页、`/api/login` 校验 admin 表、登录成功跳转 `/dashboard`、cookie 登录态、退出登录
-- [x] **学生列表（feat/student-list）**：dashboard 展示学生信息表（学号/姓名/性别/班级/电话/备注），查询逻辑抽取到 `lib/student-query.ts`
-- [x] **模糊搜索（feat/search）**：表格上方搜索框，按 学号/姓名/班级 ilike 模糊查询，URL `?q=` 驱动
-- [x] **添加学生（feat/add-student）**：表格上方"添加学生"链接 → `/students/new` 填写表单 → 保存后返回 dashboard 并显示"添加学生信息成功"，表格自动刷新
-- [x] **删除学生（feat/delete-student）**：表格新增"操作"列与"删除"按钮，确认后调用 `DELETE /api/students/[id]`，删除后 `router.refresh()` 刷新表格
-- [x] **修改学生（feat/edit-student）**：删除按钮后加"修改"按钮 → `/students/[id]/edit` 编辑页，保存后 PATCH 并返回 dashboard 显示最新结果（含"修改成功"提示）
-- [x] **分页导航（feat/pagination）**：表格底部分页栏，每页 1–20 条可选 + 首页/上一页/下一页/末页按钮，URL `?page=&pageSize=` 驱动
+全部 10 条需求已实现，并与 Supabase 远端数据库完成端到端联调验证：
 
-至此需求 1–10 全部功能已实现并通过 `npm run build` 验证。
+- [x] **1. 项目骨架（feat/scaffold）**：Next.js + Tailwind + Shadcn 基础组件 + Drizzle Schema + 数据库建库脚本
+- [x] **2. 登录功能（feat/login）**：首页登录页、`/api/login` 校验 admin 表、登录成功跳转 `/dashboard`、cookie 登录态、退出登录
+- [x] **3. 学生列表（feat/student-list）**：dashboard 展示学生信息表（学号/姓名/性别/班级/电话/备注）
+- [x] **4. 模糊搜索（feat/search）**：表格上方搜索框，按 学号/姓名/班级 ilike 模糊查询，URL `?q=` 驱动
+- [x] **5. 添加学生（feat/add-student）**：表格上方"添加学生"链接 → `/students/new` 填写表单 → 保存后返回 dashboard 并显示"添加学生信息成功"，表格自动刷新
+- [x] **6. 删除学生（feat/delete-student）**：表格新增"操作"列与"删除"按钮，确认后调用 `DELETE /api/students/[id]`，删除后 `router.refresh()` 刷新表格
+- [x] **7. 修改学生（feat/edit-student）**：删除按钮后加"修改"按钮 → `/students/[id]/edit` 编辑页，保存后 PATCH 并返回 dashboard 显示最新结果
+- [x] **8. 分页导航（feat/pagination）**：表格底部分页栏，每页 1–20 条可选 + 首页/上一页/下一页/末页按钮，URL `?page=&pageSize=` 驱动
+
+### 端到端联调结果（2026-07-28）
+连接 Supabase 项目 `bsuwautkpcxufeeqcguj`，执行 `supabase/schema.sql` 建表，并验证：登录成功跳转、中文学生记录列表/搜索/新增/修改/删除、分页"共 X 条 / 第 N / M 页"与每页条数选择均正常。
+
+## 数据库初始化与运维脚本
+
+```bash
+# 1) 建表 + 初始 admin 账号（admin/admin）
+npx tsx scripts/init-db.ts
+
+# 2) 清空 student 测试数据（保留 admin）
+npx tsx scripts/cleanup.ts
+```
+
+> 连接信息从 `.env.local` 的 `DATABASE_URL` 读取，请先按"环境变量"一节配置。
 
 > 后续功能随对应分支开发并合并后在此勾选更新。
 
