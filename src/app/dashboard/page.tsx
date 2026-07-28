@@ -1,6 +1,15 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
+import { queryStudents } from "@/lib/student-query";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +18,8 @@ export default async function DashboardPage() {
   if (!username) {
     redirect("/");
   }
+
+  const { items } = await queryStudents({ pageSize: 100 });
 
   return (
     <main className="min-h-screen bg-muted/30">
@@ -19,8 +30,43 @@ export default async function DashboardPage() {
         </div>
         <LogoutButton />
       </header>
+
       <section className="mx-auto max-w-5xl p-6">
-        <p className="text-muted-foreground">登录成功。学生信息列表将在后续功能中在此展示。</p>
+        <h2 className="mb-3 text-lg font-semibold">学生信息列表</h2>
+        <div className="rounded-md border bg-background">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>学号</TableHead>
+                <TableHead>姓名</TableHead>
+                <TableHead>性别</TableHead>
+                <TableHead>班级</TableHead>
+                <TableHead>电话</TableHead>
+                <TableHead className="min-w-[200px]">备注</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground">
+                    暂无学生信息
+                  </TableCell>
+                </TableRow>
+              ) : (
+                items.map((s) => (
+                  <TableRow key={s.id}>
+                    <TableCell>{s.studentNo}</TableCell>
+                    <TableCell>{s.name}</TableCell>
+                    <TableCell>{s.gender ?? "—"}</TableCell>
+                    <TableCell>{s.className ?? "—"}</TableCell>
+                    <TableCell>{s.phone ?? "—"}</TableCell>
+                    <TableCell className="text-muted-foreground">{s.remark ?? "—"}</TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </section>
     </main>
   );
