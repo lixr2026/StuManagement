@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { getSession } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
+import { SearchBox } from "@/components/search-box";
 import { queryStudents } from "@/lib/student-query";
 import {
   Table,
@@ -13,13 +15,21 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+interface PageProps {
+  searchParams: Promise<{ q?: string; page?: string; pageSize?: string }>;
+}
+
+export default async function DashboardPage({ searchParams }: PageProps) {
   const username = await getSession();
   if (!username) {
     redirect("/");
   }
 
-  const { items } = await queryStudents({ pageSize: 100 });
+  const sp = await searchParams;
+  const q = sp.q ?? "";
+  const page = sp.page ? Number(sp.page) : 1;
+  const pageSize = sp.pageSize ? Number(sp.pageSize) : 100;
+  const { items } = await queryStudents({ q, page, pageSize });
 
   return (
     <main className="min-h-screen bg-muted/30">
@@ -31,8 +41,13 @@ export default async function DashboardPage() {
         <LogoutButton />
       </header>
 
-      <section className="mx-auto max-w-5xl p-6">
-        <h2 className="mb-3 text-lg font-semibold">学生信息列表</h2>
+      <section className="mx-auto max-w-5xl space-y-4 p-6">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-lg font-semibold">学生信息列表</h2>
+          <Suspense fallback={<div className="h-10 w-64" />}>
+            <SearchBox />
+          </Suspense>
+        </div>
         <div className="rounded-md border bg-background">
           <Table>
             <TableHeader>
