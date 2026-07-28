@@ -2,7 +2,9 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function RowActions({ id }: { id: string }) {
   const router = useRouter();
@@ -13,7 +15,6 @@ export function RowActions({ id }: { id: string }) {
     startTransition(async () => {
       const res = await fetch(`/api/students/${id}`, { method: "DELETE" });
       if (res.ok) {
-        // 刷新表格数据
         router.refresh();
       } else {
         alert("删除失败");
@@ -31,6 +32,12 @@ export function RowActions({ id }: { id: string }) {
       >
         {pending ? "删除中…" : "删除"}
       </Button>
+      <Link
+        href={`/students/${id}/edit`}
+        className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+      >
+        修改
+      </Link>
     </div>
   );
 }
